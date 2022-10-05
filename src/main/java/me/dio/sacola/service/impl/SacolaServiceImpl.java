@@ -30,6 +30,14 @@ public class SacolaServiceImpl implements SacolaService {
 
     @Override
     public Sacola fecharSacola(Long id, int numeroFormaPagamento) {
-        return null;
+        Sacola sacola = verSacola(id);
+        if (sacola.getItens().isEmpty()) {
+            throw new RuntimeException("Inclua itens na sacola!");
+        }
+
+        FormaPagamento formaPagamento = numeroFormaPagamento == 0 ? FormaPagamento.DINHEIRO : FormaPagamento.MAQUINETA;
+        sacola.setFormaPagamento(formaPagamento);
+        sacola.setFechada(true);
+        return sacolaRepository.save(sacola);
     }
 }
